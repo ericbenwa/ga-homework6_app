@@ -1,13 +1,18 @@
-class User
-	attr_accessor :user, :password, :signed_in
+$user_list = []
+$session = nil
 
-	$user_list = []
+class User
+	attr_accessor :user, :password, :tweet
 
 	def initialize(user, password)
 		@user = user
 		@password = password
 		# @signed_in = false
-		$user_list.push([user, password])
+		@tweet = nil
+		$user_list.push([user, password, tweet])
+	end
+
+	def self.create_account
 	end
 
 	def self.sign_in
@@ -20,9 +25,10 @@ class User
 		$user_list.each do |user, password|
 			if $entered_user == user && $entered_password == password
 				puts "Signed in as #{user}."
+				$session = user
 				break
 			else
-				puts "Incorrect! Your username of password is incorrect."
+				puts "Incorrect! Your username or password is incorrect."
 			end
 		end
 
@@ -35,14 +41,18 @@ class User
 		# end
 	end
 
-	def sign_out
-		# $session = []
-		# puts $session
+	def self.sign_out
+		if $session != nil
+			puts "You have signed out, #{$session}."
+			$session = nil
+		else
+			puts "Nobody is signed in."
+		end
 	end
 
-	def self.list
-		$user_list.each { |user, password| puts "#{user} and #{password}"}
-	end
+	# def self.list
+	# 	$user_list.each { |user, password| puts "#{user} and #{password}"}
+	# end
 
 	# def self.testloop
 	# 	$entered_userr = "eric"
@@ -57,7 +67,12 @@ class User
 	# 	end
 	# end
 
-	def tweet
-		puts "we tweeting."
+	def self.tweet
+		if $session != nil
+			@tweet = gets.chomp
+			
+		else
+			puts "You need to sign in to tweet."
+		end
 	end
 end
