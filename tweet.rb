@@ -1,15 +1,21 @@
-$tweet_list = []
-
 class Tweet
-	attr_accessor :tweet, :content
 
-	def initialize(tweet, content)
+	@@tweet_list = []
+
+	attr_accessor :tweet
+
+	def initialize(tweet)
 		@tweet = tweet
-		@content = content
-		$tweet_list.push([tweet, content])
+		# @@tweet_list.push([tweet, content])
 	end
 
 	def self.all
-		$tweet_list.each { |tweet, content| puts "Tweet: #{tweet} and Content: #{content}"}
+		@@tweet_list
+	end
+
+	def self.add_tweet(title)
+		tweet = Tweet.new(title)
+		@@tweet_list << tweet
+		puts "You created a new tweet: #{title}"
 	end
 end

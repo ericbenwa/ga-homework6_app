@@ -1,44 +1,37 @@
-$user_list = []
 $session = nil
 
 class User
-	attr_accessor :user, :password, :tweet
 
-	def initialize(user, password)
-		@user = user
+	@@user_list = []
+
+	attr_accessor :username, :password
+
+	def initialize(username, password)
+		@username = username
 		@password = password
-		# @signed_in = false
-		@tweet = nil
-		$user_list.push([user, password, tweet])
 	end
 
-	def self.create_account
+	def self.all
+		@@user_list.each do |user|
+			puts user.username
+		end
 	end
 
-	def self.sign_in
-		puts "Enter your username."
-		$entered_user = gets.chomp
+	def self.sign_up(username, password)
+		@@user_list << User.new(username, password)
+		puts "Thanks for signing up, #{username}."
+	end
 
-		puts "Enter your password."
-		$entered_password = gets.chomp
-
-		$user_list.each do |user, password|
-			if $entered_user == user && $entered_password == password
-				puts "Signed in as #{user}."
+	def self.sign_in(username, password)
+		@@user_list.each do |user|
+			if user.username == username && user.password == password
+				puts "Signed in as #{user.username}."
 				$session = user
 				break
 			else
 				puts "Incorrect! Your username or password is incorrect."
 			end
 		end
-
-		# if @user == entered_user && @password == entered_password
-		# 	puts "Success! You are now signed in."
-		# 	# signed_in = true
-		# 	puts $session = [user, password]
-		# else
-		# 	puts "Incorrect! Your username of password is incorrect." # Enhance by asking the user to try again.
-		# end
 	end
 
 	def self.sign_out
@@ -46,31 +39,18 @@ class User
 			puts "You have signed out, #{$session}."
 			$session = nil
 		else
-			puts "Nobody is signed in."
+			puts "Nobody is signed in. Unable to sign out."
 		end
 	end
 
-	# def self.list
-	# 	$user_list.each { |user, password| puts "#{user} and #{password}"}
-	# end
-
-	# def self.testloop
-	# 	$entered_userr = "eric"
-	# 	$entered_passwordd = "pw"
-
-	# 	$user_list.each do |user, password|
-	# 		if $entered_userr == user && $entered_passwordd == password
-	# 			puts "signed in"
-	# 		else
-	# 			puts "incorrect"
-	# 		end
-	# 	end
-	# end
-
 	def self.tweet
 		if $session != nil
-			@tweet = gets.chomp
-			
+			puts "Enter the title of your tweet."
+			title = gets.chomp
+
+			puts "Enter the content of your tweet."
+			content = gets.chomp
+			@@tweet = Tweet.new(title, content)
 		else
 			puts "You need to sign in to tweet."
 		end
