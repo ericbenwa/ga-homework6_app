@@ -4,11 +4,12 @@ class User
 
 	@@user_list = []
 
-	attr_accessor :username, :password
+	attr_accessor :username, :password, :tweets
 
 	def initialize(username, password)
 		@username = username
 		@password = password
+		@tweets = []
 	end
 
 	def self.all
@@ -25,7 +26,7 @@ class User
 	def self.sign_in(username, password)
 		@@user_list.each do |user|
 			if user.username == username && user.password == password
-				puts "Signed in as #{user.username}."
+				puts "Signed in as #{username}."
 				$session = user
 				break
 			else
@@ -43,14 +44,10 @@ class User
 		end
 	end
 
-	def self.tweet
+	def tweet(tweet)
 		if $session != nil
-			puts "Enter the title of your tweet."
-			title = gets.chomp
-
-			puts "Enter the content of your tweet."
-			content = gets.chomp
-			@@tweet = Tweet.new(title, content)
+			new_tweet = Tweet.add_tweet(tweet)
+			@tweets << new_tweet
 		else
 			puts "You need to sign in to tweet."
 		end
