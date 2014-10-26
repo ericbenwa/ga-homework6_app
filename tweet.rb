@@ -15,5 +15,6 @@ class Tweet
 	def self.add_tweet(tweet)
 		new_tweet = Tweet.new(tweet)
 		@@tweet_list << new_tweet
+		new_tweet
 	end
 end

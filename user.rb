@@ -52,4 +52,45 @@ class User
 			puts "You need to sign in to tweet."
 		end
 	end
+
+	def follow(username)
+		if $session != nil
+			found = false
+			@@user_list.each do | user | 
+				if username == user.username
+					user.followers << self
+					self.followed << user
+					found = true
+					puts "You just followed #{username}"
+					break
+				end
+			end
+		if !found
+			puts "we couldn't find that user"
+		end
+		else
+			puts "You'll need to be logged in to do that"
+		end
+	end
+
+	def like(tweet_title)
+		found = false
+		Tweet.all.each do | tweet |
+			if tweet.title == tweet_title
+				@liked << tweet
+				found = true
+				break
+			end
+		end 
+		if !found
+			puts "sorry, we couldn't find a tweet with that title"
+		end
+	end
+
+	def liked_tweets
+		@liked.each do | tweet |
+			puts tweet.title
+			puts tweet.content
+		end
+	end
 end
